@@ -8,6 +8,8 @@ body {
   color: #505050; /* neutral gray text */
   margin: 0;
   height: 100vh;
+  overflow: hidden;
+  touch-action: none;
 }
 
 .hidden { display: none; }
@@ -50,19 +52,21 @@ button {
 }
 
 #game-board {
-  display: grid;
-  grid-template-columns: repeat(20, 25px);
-  grid-template-rows: repeat(20, 25px);
+ display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  width: 90vw;
+  max-width: 500px;
+  aspect-ratio: 1 / 1;
   gap: 1px;
-  background-color: #FF8DA1; /* board darker pink border */
+  background-color: #FF8DA1;
   margin-top: 20px;
-  
 }
 
 .cell {
-  width: 25px;
-  height: 25px;
-  background-color: #FFFFFF; /* white grid cells */
+ width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
 }
 
 .snake {

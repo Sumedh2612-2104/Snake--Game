@@ -1,22 +1,18 @@
-// ===== Constants & Variables =====
+// ===== Constants and Variables =====
 const boardSize = 20;
 const gameBoard = document.getElementById("game-board");
 const scoreSpan = document.getElementById("score");
-const finalScoreSpan = document.getElementById("final-score");
+const startBtn = document.getElementById("start");
+const pauseBtn = document.getElementById("pause");
+const resetBtn = document.getElementById("reset");
 
-const startScreen = document.getElementById("start-screen");
-const gameScreen = document.getElementById("game-screen");
-const gameOverScreen = document.getElementById("gameover-screen");
-
-const restartBtn = document.getElementById("restart");
-
-let snake = [];
+let snake = [{ x: 10, y: 10 }];
 let direction = "RIGHT";
 let food = {};
 let score = 0;
 let intervalId;
 let running = false;
-let speed = 200;
+let speed = 200; // default speed = Easy
 const difficulties = { easy: 200, medium: 170, hard: 140 };
 
 // ===== Initialize Board =====
@@ -29,10 +25,12 @@ function createBoard() {
   }
 }
 
+// ===== Convert coordinates to index =====
 function getIndex(x, y) {
   return y * boardSize + x;
 }
 
+// ===== Draw Snake and Food =====
 function draw() {
   const cells = document.querySelectorAll(".cell");
   cells.forEach(cell => cell.classList.remove("snake", "food"));
@@ -59,6 +57,7 @@ function spawnFood() {
 // ===== Move Snake =====
 function moveSnake() {
   const head = { ...snake[0] };
+
   switch (direction) {
     case "UP": head.y -= 1; break;
     case "DOWN": head.y += 1; break;
@@ -78,6 +77,7 @@ function moveSnake() {
 
   snake.unshift(head);
 
+  // Check food
   if (head.x === food.x && head.y === food.y) {
     score++;
     scoreSpan.innerText = score;
@@ -89,55 +89,25 @@ function moveSnake() {
   draw();
 }
 
-// ===== Start Game =====
-function startGame() {
-  snake = [{ x: 10, y: 10 }];
-  direction = "RIGHT";
-  score = 0;
-  scoreSpan.innerText = score;
-  createBoard();
-  spawnFood();
-  draw();
-  running = true;
-  intervalId = setInterval(moveSnake, speed);
-
-  // Show game screen
-  startScreen.classList.add("hidden");
-  gameOverScreen.classList.add("hidden");
-  gameScreen.classList.remove("hidden");
-}
-
 // ===== Game Over =====
 function gameOver() {
   clearInterval(intervalId);
   running = false;
-  finalScoreSpan.innerText = score;
-
-  // Show Game Over screen
-  gameScreen.classList.add("hidden");
-  gameOverScreen.classList.remove("hidden");
+  alert("Game Over! Press Space to restart.");
 }
 
 // ===== Restart Game =====
 function restartGame() {
-  startScreen.classList.remove("hidden");
-  gameOverScreen.classList.add("hidden");
-  gameScreen.classList.add("hidden");
+  clearInterval(intervalId);
+  snake = [{ x: 10, y: 10 }];
+  direction = "RIGHT";
+  score = 0;
+  scoreSpan.innerText = score;
+  running = true;
+  spawnFood();
+  draw();
+  intervalId = setInterval(moveSnake, speed);
 }
-
-// ===== Difficulty Selection =====
-document.getElementById("easy").addEventListener("click", () => {
-  speed = difficulties.easy; startGame();
-});
-document.getElementById("medium").addEventListener("click", () => {
-  speed = difficulties.medium; startGame();
-});
-document.getElementById("hard").addEventListener("click", () => {
-  speed = difficulties.hard; startGame();
-});
-
-// ===== Restart Button =====
-restartBtn.addEventListener("click", restartGame);
 
 // ===== Keyboard Controls =====
 document.addEventListener("keydown", e => {
@@ -148,36 +118,44 @@ document.addEventListener("keydown", e => {
     case "ArrowRight": if (direction !== "LEFT") direction = "RIGHT"; break;
   }
 
-  // Space to restart after game over
-  if (!running && e.code === "Space") restartGame();
-});
-
-// ===== Mobile Swipe Controls =====
-let startX = 0;
-let startY = 0;
-
-document.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-}, { passive: true });
-
-document.addEventListener("touchend", e => {
-  if (!running) return;
-
-  let endX = e.changedTouches[0].clientX;
-  let endY = e.changedTouches[0].clientY;
-
-  let diffX = endX - startX;
-  let diffY = endY - startY;
-
-  // Prevent tiny accidental swipes
-  if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return;
-
-  if (Math.abs(diffX) > Math.abs(diffY)) {
-    if (diffX > 0 && direction !== "LEFT") direction = "RIGHT";
-    else if (diffX < 0 && direction !== "RIGHT") direction = "LEFT";
-  } else {
-    if (diffY > 0 && direction !== "UP") direction = "DOWN";
-    else if (diffY < 0 && direction !== "DOWN") direction = "UP";
+  // Space = restart after game over
+  if (!running && e.code === "Space") {
+    restartGame();
   }
 });
+
+// ===== Button Controls =====
+startBtn.addEventListener("click", () => {
+  if (!running) {
+    intervalId = setInterval(moveSnake, speed);
+    running = true;
+  }
+});
+
+pauseBtn.addEventListener("click", () => {
+  if (running) {
+    clearInterval(intervalId);
+    running = false;
+  }
+});
+
+resetBtn.addEventListener("click", restartGame);
+
+// ===== Difficulty Buttons =====
+document.getElementById("easy").addEventListener("click", () => setDifficulty("easy"));
+document.getElementById("medium").addEventListener("click", () => setDifficulty("medium"));
+document.getElementById("hard").addEventListener("click", () => setDifficulty("hard"));
+
+function setDifficulty(level) {
+  speed = difficulties[level];
+  if (running) {
+    clearInterval(intervalId);
+    intervalId = setInterval(moveSnake, speed);
+  }
+}
+
+// ===== Start Game =====
+createBoard();
+spawnFood();
+draw();
+setDifficulty("easy"); // default difficulty

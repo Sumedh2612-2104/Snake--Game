@@ -1,0 +1,88 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+#difficulty {
+  margin-bottom: 15px;
+}
+
+#difficulty button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffc107;
+  color: #222;
+  transition: background 0.2s;
+}
+
+#difficulty button:hover {
+  background-color: #e0a800;
+}
+
+#score-container {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(20, 20px);
+  grid-template-rows: repeat(20, 20px);
+  gap: 1px;
+  background-color: #222;
+}
+
+.cell {
+  width: 20px;
+  height: 20px;
+  background-color: #eee;
+}
+
+.snake {
+  background-color: #28a745;
+}
+
+.food {
+  background-color: #dc3545;
+}
+
+#controls {
+  margin-top: 20px;
+}
+
+#controls button {
+  margin: 0 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  transition: background 0.2s;
+}
+
+#controls button:hover {
+  background-color: #0056b3;
+}
+
+p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
