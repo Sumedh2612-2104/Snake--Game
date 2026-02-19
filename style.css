@@ -1,0 +1,89 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: #FFB5C0; /* soft pink base */
+  color: #505050; /* neutral gray text */
+  margin: 0;
+  height: 100vh;
+}
+
+.hidden { display: none; }
+
+h1 {
+  margin-bottom: 15px;
+  color: #FF3558; /* deep pink title */
+   text-align: center;
+}
+
+p { margin: 10px 0;
+text-align: center; }
+
+button {
+  margin: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#difficulty button {
+  background-color: #FF8DA1; /* coral button */
+  color: #FFFFFF;
+   text-align: center;
+}
+#difficulty button:hover {
+  background-color: #FF3558;
+}
+
+#restart {
+  background-color: #FF8DA1;
+  color: #FFFFFF;
+   text-align: center;
+}
+#restart:hover {
+  background-color: #FF3558;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(20, 25px);
+  grid-template-rows: repeat(20, 25px);
+  gap: 1px;
+  background-color: #FF8DA1; /* board darker pink border */
+  margin-top: 20px;
+  
+}
+
+.cell {
+  width: 25px;
+  height: 25px;
+  background-color: #FFFFFF; /* white grid cells */
+}
+
+.snake {
+  background-color: #FF3558; /* deep pink snake */
+}
+
+.food {
+  background-color: #FF8DA1; /* coral food */
+}
+
+#score-container {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #505050;
+  text-align: center;
+}
+
+#difficulty,
+#controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  text-align: center;
+}
