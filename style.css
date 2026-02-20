@@ -7,7 +7,7 @@ body {
   background-color: #FFB5C0; /* soft pink base */
   color: #505050; /* neutral gray text */
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .hidden { display: none; }
