@@ -184,31 +184,3 @@ document.addEventListener("touchend", e => {
     else if (diffY < 0 && direction !== "DOWN") direction = "UP";
   }
 });
-
-// ===== Mobile Swipe Controls ===== 
-
-let startX = 0, startY = 0;
-
-document.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-}, { passive: true });
-
-document.addEventListener("touchend", e => {
-  if (!running) return;
-
-  let endX = e.changedTouches[0].clientX;
-  let endY = e.changedTouches[0].clientY;
-  let dx = endX - startX;
-  let dy = endY - startY;
-
-  if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
-
-  if (Math.abs(dx) > Math.abs(dy)) {
-    if (dx > 0 && direction !== "LEFT") direction = "RIGHT";
-    else if (dx < 0 && direction !== "RIGHT") direction = "LEFT";
-  } else {
-    if (dy > 0 && direction !== "UP") direction = "DOWN";
-    else if (dy < 0 && direction !== "DOWN") direction = "UP";
-  }
-});

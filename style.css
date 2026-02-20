@@ -7,13 +7,7 @@ body {
   background-color: #FFB5C0; /* soft pink base */
   color: #505050; /* neutral gray text */
   margin: 0;
-<<<<<<< HEAD
-  min-height: 100vh;
-=======
   height: 100vh;
->>>>>>> 6fb0d3f (final output)
-  overflow: hidden;
-  touch-action: none;
 }
 
 .hidden { display: none; }
@@ -57,33 +51,20 @@ button {
 
 
 #game-board {
-<<<<<<< HEAD
- display: grid;
-=======
   display: grid;
->>>>>>> 6fb0d3f (final output)
   grid-template-columns: repeat(20, 1fr);
   grid-template-rows: repeat(20, 1fr);
   width: 90vw;
   max-width: 500px;
-<<<<<<< HEAD
-  aspect-ratio: 1 / 1;
-=======
   aspect-ratio: 1/1;
->>>>>>> 6fb0d3f (final output)
   gap: 1px;
   background-color: #FF8DA1;
   margin-top: 20px;
 }
 
-<<<<<<< HEAD
-.cell {
- width: 100%;
-=======
 
  .cell {
   width: 100%;
->>>>>>> 6fb0d3f (final output)
   height: 100%;
   background-color: #FFFFFF;
 }
@@ -111,10 +92,3 @@ button {
   justify-content: center;
   text-align: center;
 }
-
-#game-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
