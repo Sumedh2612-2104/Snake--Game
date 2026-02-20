@@ -91,7 +91,6 @@ function moveSnake() {
 
 // ===== Start Game =====
 function startGame() {
-
   clearInterval(intervalId);
 
   snake = [{ x: 10, y: 10 }];
@@ -155,41 +154,35 @@ document.addEventListener("keydown", e => {
   if (!running && e.code === "Space") restartGame();
 });
 
-// ===== Mobile Swipe Controls =====
+// ===== Mobile Swipe Controls (board only) =====
+let startX = 0, startY = 0;
 
-let startX = 0;
-let startY = 0;
+if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+  gameBoard.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    e.preventDefault(); // prevent scrolling only on board
+  }, { passive: false });
 
-// touchstart: record start coordinates, prevent scrolling
-document.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-  
-  e.preventDefault(); // stop browser from scrolling
-}, { passive: false });
+  gameBoard.addEventListener("touchend", e => {
+    if (!running) return;
 
-// touchend: calculate swipe direction, prevent scrolling
-document.addEventListener("touchend", e => {
-  if (!running) return;
+    let endX = e.changedTouches[0].clientX;
+    let endY = e.changedTouches[0].clientY;
 
-  let endX = e.changedTouches[0].clientX;
-  let endY = e.changedTouches[0].clientY;
+    let diffX = endX - startX;
+    let diffY = endY - startY;
 
-  let diffX = endX - startX;
-  let diffY = endY - startY;
+    if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return;
 
-  // Ignore tiny swipes
-  if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return;
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0 && direction !== "LEFT") direction = "RIGHT";
+      else if (diffX < 0 && direction !== "RIGHT") direction = "LEFT";
+    } else {
+      if (diffY > 0 && direction !== "UP") direction = "DOWN";
+      else if (diffY < 0 && direction !== "DOWN") direction = "UP";
+    }
 
-  if (Math.abs(diffX) > Math.abs(diffY)) {
-    // horizontal swipe
-    if (diffX > 0 && direction !== "LEFT") direction = "RIGHT";
-    else if (diffX < 0 && direction !== "RIGHT") direction = "LEFT";
-  } else {
-    // vertical swipe
-    if (diffY > 0 && direction !== "UP") direction = "DOWN";
-    else if (diffY < 0 && direction !== "DOWN") direction = "UP";
-  }
-
-  e.preventDefault(); // stop browser from scrolling
-}, { passive: false });
+    e.preventDefault(); // prevent scrolling only on board
+  }, { passive: false });
+}
