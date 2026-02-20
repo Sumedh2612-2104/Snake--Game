@@ -154,35 +154,43 @@ document.addEventListener("keydown", e => {
   if (!running && e.code === "Space") restartGame();
 });
 
-// ===== Mobile Swipe Controls (board only) =====
-let startX = 0, startY = 0;
+// ===== Mobile Swipe Controls (mobile only) =====
+let startX = 0;
+let startY = 0;
 
-if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-  gameBoard.addEventListener("touchstart", e => {
+// Only apply mobile swipe behavior on mobile devices
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+  const board = document.getElementById("game-board");
+
+  // Prevent scroll and bounce only on the board
+  board.style.touchAction = "none";
+  board.style.overscrollBehavior = "contain";
+
+  board.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
-    e.preventDefault(); // prevent scrolling only on board
-  }, { passive: false });
+  }, { passive: true });
 
-  gameBoard.addEventListener("touchend", e => {
+  board.addEventListener("touchend", e => {
     if (!running) return;
 
-    let endX = e.changedTouches[0].clientX;
-    let endY = e.changedTouches[0].clientY;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
 
-    let diffX = endX - startX;
-    let diffY = endY - startY;
+    const diffX = endX - startX;
+    const diffY = endY - startY;
 
+    // Ignore tiny swipes
     if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return;
 
     if (Math.abs(diffX) > Math.abs(diffY)) {
+      // horizontal swipe
       if (diffX > 0 && direction !== "LEFT") direction = "RIGHT";
       else if (diffX < 0 && direction !== "RIGHT") direction = "LEFT";
     } else {
+      // vertical swipe
       if (diffY > 0 && direction !== "UP") direction = "DOWN";
       else if (diffY < 0 && direction !== "DOWN") direction = "UP";
     }
-
-    e.preventDefault(); // prevent scrolling only on board
   }, { passive: false });
-}
+} 
