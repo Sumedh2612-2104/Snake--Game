@@ -156,14 +156,19 @@ document.addEventListener("keydown", e => {
 });
 
 // ===== Mobile Swipe Controls =====
+
 let startX = 0;
 let startY = 0;
 
+// touchstart: record start coordinates, prevent scrolling
 document.addEventListener("touchstart", e => {
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
-}, { passive: true });
+  
+  e.preventDefault(); // stop browser from scrolling
+}, { passive: false });
 
+// touchend: calculate swipe direction, prevent scrolling
 document.addEventListener("touchend", e => {
   if (!running) return;
 
@@ -173,14 +178,18 @@ document.addEventListener("touchend", e => {
   let diffX = endX - startX;
   let diffY = endY - startY;
 
-  // Prevent tiny accidental swipes
+  // Ignore tiny swipes
   if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return;
 
   if (Math.abs(diffX) > Math.abs(diffY)) {
+    // horizontal swipe
     if (diffX > 0 && direction !== "LEFT") direction = "RIGHT";
     else if (diffX < 0 && direction !== "RIGHT") direction = "LEFT";
   } else {
+    // vertical swipe
     if (diffY > 0 && direction !== "UP") direction = "DOWN";
     else if (diffY < 0 && direction !== "DOWN") direction = "UP";
   }
-});
+
+  e.preventDefault(); // stop browser from scrolling
+}, { passive: false });
