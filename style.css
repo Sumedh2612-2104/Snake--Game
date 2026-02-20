@@ -93,7 +93,7 @@ button {
   text-align: center;
 }
 
-body, #game-screen {
+#game-screen {
   touch-action: none; /* prevents default touch gestures like scrolling */
-  overscroll-behavior: none; /* stops pull-to-refresh or bounce scrolling */
+  overscroll-behavior: contain; /* stops pull-to-refresh or bounce scrolling */
 }
